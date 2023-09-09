@@ -1,56 +1,61 @@
-// ----------------------
-// IMPORTANT PLEASE READ:
-// ----------------------
-// When you submit your plugin to our marketplace, the attributes you select when uploading will
-// be displayed to users installing your plugin, so it is important to only select the ones
-// that you are using. Asking for more data than you need will likely cause users to not
-// install your plugin.
-//
-// Supported values:
-// - cellValue: The value of the cell that the plugin is being rendered in.
-// - rowValue: The value of the row that the plugin is being rendered in.
-// - tableValue: The value of the table that the plugin is being rendered in.
-// - tableSchemaValue: The schema of the table that the plugin is being rendered in.
-// - databaseSchemaValue: The schema of the database that the plugin is being rendered in.
-// - configuration: The configuration object that the user specified when installing the plugin.
-//
-var privileges = [
-    'cellValue',
-    'configuration'
-]
-
-// Do NOT change the variable name. Doing so will break the plugin when uploaded
-// to Outerbase.
 var templateCell_$PLUGIN_ID = document.createElement('template')
 templateCell_$PLUGIN_ID.innerHTML = `
 <style>
     #container {
-        width: calc(100% - 16px);
-        padding: 8px;
-        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px
+    }
+
+    #input-image-value{
+        width: 18px
+    }
+
+    .template-container-btn{
+        padding: 8px 16px;
     }
 </style>
 
-<div id="container">
-    <button id="view-image">View</button>
+<div id="template-container">
+    <input type="text" id="input-image-value" placeholder="Enter URL...">
+    <!-- <button id="image-url" class="template-container-btn">Edit</button> -->
+    <button id="view-image" class="template-container-btn">View</button>
 </div>
 `
 
-// This is the configuration object that Outerbase passes to your plugin.
-// Define all of the configuration options that your plugin requires here.
-//
-// Do NOT change the class name. Doing so will break the plugin when uploaded
-// to Outerbase.
+
+var templateEditor_$PLUGIN_ID = document.createElement('template');
+templateEditor_$PLUGIN_ID.innerHTML = `
+<style>
+    #editor-container{
+        max-width: 400px;
+    }
+
+    #image {
+        background-size: contain;
+        background-repeat: no-repeat;
+        max-width: 400px;
+    }
+
+    #background-image {
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+</style>
+<div id="editor-container">
+    <div id="background-image">
+        <img id="image" style=";" />
+    </div>
+</div>
+`
+
 class OuterbasePluginConfig_$PLUGIN_ID {
-    //Values we need before hand from users
-    //here we need none of them
     constructor(object) {
         
     }
 }
 
-// Do NOT change the class name. Doing so will break the plugin when uploaded
-// to Outerbase.
 class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
     static get observedAttributes() {
         return privileges
@@ -78,13 +83,42 @@ class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
             JSON.parse(this.getAttribute('configuration'))
         )
 
-        this.render()
+        //set value of input tag to cell value using getAttribute('cellValue')
+        this.shadow.querySelector('#input-image-value').value = this.getAttribute('cellvalue');
+
+        //get tag/elements from shadow dom
+        var imageInput = this.shadow.getElementById('input-image-value');
+        var viewImageButton = this.shadow.getElementById('view-image');
+
+        if(imageInput && viewImageButton){
+            viewImageButton.addEventListener("click", () => {
+                // console.log('onedit')
+                // this.setAttribute('onedit', true)
+                this.callCustomEvent({
+                    action: 'onedit',
+                    value: true
+                })
+            });
+        }
+        
+
     }
 
-    render() {
-        //here goes the UI (HTML and CSS) for rendering
-         
+    callCustomEvent(data){
+        console.log(data);
+        const event = new CustomEvent('custom-change',{
+            detail: data,
+            bubbles: true,
+            composed: true
+        });
+        this.dispatchEvent(event)
     }
+
+    //commented in original
+    // render() {
+    //     //here goes the UI (HTML and CSS) for rendering
+         
+    // }
 }
 
 // Do NOT change the variable name. Doing so will break the plugin when uploaded
@@ -99,7 +133,9 @@ templateEditor_$PLUGIN_ID.innerHTML = `
 </style>
 
 <div id="container">
-
+    <div id="background-image">
+        <img id="image"  />
+    </div>
 </div>
 `
 
@@ -127,16 +163,20 @@ class OuterbasePluginEditor_$PLUGIN_ID extends HTMLElement {
             JSON.parse(this.getAttribute('configuration'))
         )
 
-        this.render()
+        // this.render() Why?
     }
 
     connectedCallback() {
-        
+        var imageView = this.shadow.getElementById("image");
+        console.log("Image View Inside conntected call back", imageView)
+        if(imageView){
+            imageView.src = this.getAttribute('cellvalue')
+        }
     }
 
-    render() {
+    // render() {
         
-    }
+    // }
 }
 
 // DO NOT change the name of this variable or the classes defined in this file.
