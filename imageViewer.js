@@ -19,7 +19,7 @@ templateEditor_$PLUGIN_ID.innerHTML = `
 .modal {
     width: 400px;
     position: absolute;
-    background-color: #222;
+    background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -60,8 +60,8 @@ templateEditor_$PLUGIN_ID.innerHTML = `
 
 .loader {
     animation: spin 1s linear infinite;
-    height: 10px;
-    width: 10px;
+    height: 8px;
+    width: 8px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -417,9 +417,6 @@ class OuterbasePluginConfig_$PLUGIN_ID {
 
 //PluginCell
 class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
-  static get ObservedAttributes() {
-    return privileges;
-  }
 
   //initialize plugin config with empty values
   config = new OuterbasePluginConfig_$PLUGIN_ID({});
@@ -432,20 +429,18 @@ class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
   }
 
   connectedCallback() {
-    this.config = new OuterbasePluginConfig_$PLUGIN_ID(
-      JSON.parse(this.getAttribute("configuration"))
-    );
+   
 
     var containerImageUrl = this.shadow.getElementById("container-image-url");
     containerImageUrl.innerHTML = this.getAttribute("cellValue");
 
     if (containerImageUrl) {
-      containerImageUrl.addEventListener("click", () => {
-        this.callCustomEvent({
-          action: "onedit",
+    containerImageUrl.addEventListener("click", () => {
+            this.callCustomEvent({
+            action: "onedit",
           value: containerImageUrl.innerText,
         });
-      });
+    });
     }
   }
 
@@ -461,9 +456,6 @@ class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
 }
 
 class OuterbasePluginEditor_$PLUGIN_ID extends HTMLElement {
-  static get observedAttributes() {
-    return privileges;
-  }
 
   constructor() {
     super();
