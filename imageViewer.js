@@ -16,63 +16,394 @@ templateCell_$PLUGIN_ID.innerHTML = `
 var templateEditor_$PLUGIN_ID = document.createElement("template");
 templateEditor_$PLUGIN_ID.innerHTML = `
 <style>
-.modal{
-    display: block;
+.modal {
+    width: 400px;
     position: absolute;
-    background-color: rgba(0,0,0, 0.4);
-    font-family: 'Inter', 'sans-serif';
-    font-size: 16px;
-    transform: translate(50%,50%);
+    background-color: #222;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
-.modal-content{
-    height: 80%;
-    max-width: 520px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+.modal-image {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 10px auto;
 }
-  
-  .modal-content > input{
-      width: 50%;
-      padding: 8px 16px;
-      border: none;
-      border-radius: .5rem;
-    }
-    
-    .modal-content >  img{
-        width: 100%;
-        height: 80%;
-        object-fit: contain;
-        border-radius: 1rem;
-    }
-    
-    .modal-content > button{
-        color: black;
-        background: linear-gradient(rgb(248, 248, 248) 0%, rgb(254, 254, 254) 100%);
-        box-shadow: rgb(176, 176, 176) 0px -1px 1px 1px inset, rgb(252, 252, 252) 0px 0px 2px 0px inset;
-        padding: 6px 16px;
-        border-radius: .5rem;
+
+.url-input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.save-button {
+    background-color: #3498db;
+    color: #fff;
     border: none;
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
+    border-radius: 4px;
+}
+
+.save-button:hover {
+    background-color: #2980b9;
+}
+
+.loader {
+    animation: spin 1s linear infinite;
+    height: 10px;
+    width: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -5px;
+  }
+  
+  @keyframes spin {
+    0% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    6.25% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    12.5% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    18.75% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    25% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    31.25% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    37.5% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
+    43.75% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px #000, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px transparent;
+    }
+    50% {
+      box-shadow: 
+        0px -30px transparent, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px #000, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    56.25% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px transparent, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px #000, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    62.5% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px transparent, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px #000, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    68.75% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px transparent, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px #000, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    75% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px transparent, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px #000, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    81.25% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px transparent, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px #000, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    87.5% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px transparent, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px #000,
+        -10px -30px #000;
+    }
+    93.75% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px transparent, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px #000;
+    }
+    100% {
+      box-shadow: 
+        0px -30px #000, 
+        10px -30px #000, 
+        20px -20px #000, 
+        30px -10px #000, 
+        30px 0px #000, 
+        30px 10px #000, 
+        20px 20px #000, 
+        10px 30px #000, 
+        0px 30px transparent, 
+        -10px 30px transparent, 
+        -20px 20px transparent, 
+        -30px 10px transparent, 
+        -30px 0px transparent, 
+        -30px -10px transparent, 
+        -20px -20px transparent,
+        -10px -30px transparent;
+    }
   }
   
 </style>
 
-<!-- Modal -->
-<div id="container" class="modal">
-
-<!--    Content  -->
-<div class="modal-content"> 
-
-    <img id="preview-image" alt="image">
-    <input id="input-url" type="url" name="url" placeholder="image url">
-    
-    <button id="update-url-btn" class="btn btn-primary" >Update</button>
-
-  </div>
+<div class="modal-overlay">
+    <div class="modal">
+        <!-- Loader -->
+        <div class="loader" id="loader"></div>
+        <img id="modal-image" alt="Image" class="modal-image">
+        <input type="url" id="url-input" class="url-input" placeholder="Enter URL">
+        <button id="save-button"   class="save-button">Save URL</button>
+    </div>
 </div>
 
 `;
@@ -81,47 +412,7 @@ templateEditor_$PLUGIN_ID.innerHTML = `
 class OuterbasePluginConfig_$PLUGIN_ID {
   constructor(object) {}
 
-  connectedCallback() {
-    this.loadExternalScript([
-      "https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css",
-      "https://code.jquery.com/jquery-3.2.1.slim.min.js",
-      "https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js",
-      "https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js",
-    ]);
-  }
-
-  loadExternalScript(url) {
-    return new Promise((resolve, reject) => {
-      if (url.length) {
-        url.map((singleUrl) => {
-          const script = document.createElement("script");
-          script.src = url;
-
-          script.onload = () => {
-            resolve();
-          };
-
-          script.onerror = () => {
-            reject(new Error(`Failed to load script: ${url}`));
-          };
-
-          document.head.appendChild(script);
-        });
-      }
-      const script = document.createElement("script");
-      script.src = url;
-
-      script.onload = () => {
-        resolve();
-      };
-
-      script.onerror = () => {
-        reject(new Error(`Failed to load script: ${url}`));
-      };
-
-      document.head.appendChild(script);
-    });
-  }
+  connectedCallback() {}
 }
 
 //PluginCell
@@ -145,10 +436,8 @@ class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
       JSON.parse(this.getAttribute("configuration"))
     );
 
-    this.shadow.querySelector("#container-image-url").innerHTML =
-      this.getAttribute("cellValue");
-
     var containerImageUrl = this.shadow.getElementById("container-image-url");
+    containerImageUrl.innerHTML = this.getAttribute("cellValue");
 
     if (containerImageUrl) {
       containerImageUrl.addEventListener("click", () => {
@@ -188,14 +477,46 @@ class OuterbasePluginEditor_$PLUGIN_ID extends HTMLElement {
   }
 
   connectedCallback() {
-    var previewImageEl = this.shadow.getElementById("preview-image");
-    var inputURLEl = this.shadow.getElementById("input-url");
+    var modalImage = this.shadow.getElementById("modal-image");
+    var urlInputEl = this.shadow.getElementById("url-input");
+    const loader = this.shadow.getElementById("loader");
+    const saveButton = this.shadow.getElementById("save-button");
 
-    console.log(previewImageEl, inputURLEl, inputURLEl && inputURLEl);
-    if (previewImageEl && inputURLEl) {
-      previewImageEl.src = this.getAttribute("cellValue");
-      inputURLEl.value = this.getAttribute("cellValue");
+    modalImage.onload = function(){
+        hideLoader()
     }
+
+    if (modalImage && urlInputEl) {
+      modalImage.src = this.getAttribute("cellValue");
+      urlInputEl.value = this.getAttribute("cellValue");
+    }
+
+    // Function to show the loader and hide the image
+    function showLoader() {
+      loader.style.display = "block";
+      modalImage.style.display = "none";
+    }
+
+    // Function to hide the loader and show the image
+    function hideLoader() {
+      loader.style.display = "none";
+      modalImage.style.display = "block";
+    }
+
+    // Event listener for the "Save URL" button
+    saveButton.addEventListener("click", function () {
+      const imageUrl = urlInputEl.value;
+      showLoader(); // Show the loader before loading the image
+
+      // Load the image
+      const img = new Image();
+      img.onload = function () {
+        modalImage.src = imageUrl;
+        console.log("Image loaded")
+        hideLoader(); // Hide the loader once the image is loaded
+      };
+      img.src = imageUrl;
+    });
   }
 }
 
