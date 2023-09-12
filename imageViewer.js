@@ -1,8 +1,62 @@
-class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement {
-  constructor() {
-    super();
+//creating a template 
+const templateCell_$PLUGIN_ID = document.createElement("template");
+//adding styles and tags inside the template tags innerHTML
+templateCell_$PLUGIN_ID.innerHTML = `
+    <style>
+        #container-image-url{
+            margin: 0;
+            padding: 0 12px;
+        }
+    </style>
+
+    <div id="container">
+        <p id="container-image-url"></p>
+    </div>
+`;
+
+class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement{
+    //smiliar to previours editor view class constructor except the child 
+    //that is getting appended to the nodoe
+    constructor() {
+        //to use HTMLElemement Properties (Specifically shadowDOM)
+        super();
+        
+        this.shadow = this.attachShadow({ mode: "open" });
+        //attach our Modal UI to shadow dom
+        this.shadow.appendChild(templateCell_$PLUGIN_ID.cloneNode(true));
+        //initalize config class for getting values of the cell
+        this.config = new OuterbasePluginConfig_$PLUGIN_ID(
+          JSON.parse(this.getAttribute("configuration"))
+        );
+      }
+
+    connectedCallback() {
+        const containerImageUrl = this.shadow.getElementById("container-image-url");
+        //assign value as innerHTML or as innerTextContent
+        containerImageUrl.innerHTML = this.getAttribute("cellValue");
+    
+        if (containerImageUrl) {
+        //IMPORTANT on click event trigger a callCustomEvent property
+        containerImageUrl.addEventListener("click", () => {
+                this.callCustomEvent({
+                action: "onedit",
+                value: containerImageUrl.innerText,
+            });
+        });
+        }
+      }
+    //IMPORTANT property to create the custom event and dispatch it.
+  callCustomEvent(data) {
+    const event = new CustomEvent("custom-change", {
+      detail: data,
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(event);
   }
 }
+
 
 const templateEditor_$PLUGIN_ID= document.createElement("template");
 templateEditor_$PLUGIN_ID.innerHTML = `
