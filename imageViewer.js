@@ -23,7 +23,7 @@ class OuterbasePluginCell_$PLUGIN_ID extends HTMLElement{
   
       this.shadow = this.attachShadow({ mode: "open" });
       //attach our Modal UI to shadow dom
-        this.shadow.appendChild(templateCell_$PLUGIN_ID.cloneNode(true));
+        this.shadow.appendChild(templateCell_$PLUGIN_ID.content.cloneNode(true));
 // //initalize config class for getting values of the cell can be commented and it will still work
 //         this.config = new OuterbasePluginConfig_$PLUGIN_ID(
 //           JSON.parse(this.getAttribute("configuration"))
