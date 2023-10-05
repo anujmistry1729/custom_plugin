@@ -466,6 +466,16 @@ class OuterbasePluginEditor_$PLUGIN_ID extends HTMLElement {
     this.config = new OuterbasePluginConfig_$PLUGIN_ID(
       JSON.parse(this.getAttribute("configuration"))
     );
+
+    const agPopUpChild = document.querySelector(".ag-popup-child");
+
+    agPopUpChild.style += `
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    `
+
   }
 
   connectedCallback() {
@@ -512,6 +522,62 @@ class OuterbasePluginEditor_$PLUGIN_ID extends HTMLElement {
   }
 }
 
+
+// var templateConfiguration = document.createElement("template")
+// templateConfiguration.innerHTML = `
+// <style>
+//     #container {
+//         display: flex;
+//         height: 100%;
+//         overflow-y: scroll;
+//         padding: 40px 50px 65px 40px;
+//     }
+// </style>
+
+// <div id="container">
+    
+// </div>
+// `
+
+// class OuterbasePluginConfiguration_$PLUGIN_ID extends HTMLElement {
+//     static get observedAttributes() {
+//         return privileges
+//     }
+
+//     config = new OuterbasePluginConfig_$PLUGIN_ID({})
+
+//     constructor() {
+//         super()
+
+//         this.shadow = this.attachShadow({ mode: "open" })
+//         this.shadow.appendChild(templateConfiguration.content.cloneNode(true))
+//     }
+
+//     connectedCallback() {
+//         // this.config = new OuterbasePluginConfig_$PLUGIN_ID(decodeAttributeByName(this, "configuration"))
+//         this.config = new OuterbasePluginConfig_$PLUGIN_ID(JSON.parse(this.getAttribute("configuration")));
+//         this.config.cellValue = JSON.parse(this.getAttribute("cellValue"));
+//         // this.config.cellValue = decodeAttributeByName(this, "cellValue")
+//         this.render()
+//     }
+
+//     render() {
+//         this.shadow.querySelector("#container").innerHTML = `
+//         <div>
+//             <h1>Hello, Configuration World!</h1>
+//             <button id="saveButton">Save View</button>
+//         </div>
+//         `
+
+//         var saveButton = this.shadow.getElementById("saveButton");
+//         saveButton.addEventListener("click", () => {
+//             triggerEvent(this, {
+//                 action: OuterbaseEvent.onSave,
+//                 value: {}
+//             })
+//         });
+//     }
+// }
 window.customElements.define(
   "outerbase-plugin-cell-$PLUGIN_ID",
   OuterbasePluginCell_$PLUGIN_ID
@@ -520,3 +586,5 @@ window.customElements.define(
   "outerbase-plugin-editor-$PLUGIN_ID",
   OuterbasePluginEditor_$PLUGIN_ID
 );
+
+// window.customElements.define('outerbase-plugin-configuration-$PLUGIN_ID', OuterbasePluginConfiguration_$PLUGIN_ID)
